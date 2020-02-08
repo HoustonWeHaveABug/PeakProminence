@@ -34,7 +34,7 @@ edge_t *queue;
 int main(void) {
 	unsigned long map_size, y, peaks_n;
 	cell_t *map, *map_min, *peak, *cell;
-	if (scanf("%lu%lu", &height, &width) != 2 || height < 1 || width < 1) {
+	if (scanf("%lu%lu", &height, &width) != 2 || height < 1UL || width < 1UL) {
 		fprintf(stderr, "Invalid map size\n");
 		fflush(stderr);
 		return EXIT_FAILURE;
@@ -51,9 +51,9 @@ int main(void) {
 		fflush(stderr);
 		return EXIT_FAILURE;
 	}
-	for (y = 0; y < height; y++) {
+	for (y = 0UL; y < height; y++) {
 		unsigned long x;
-		for (x = 0; x < width; x++) {
+		for (x = 0UL; x < width; x++) {
 			if (!read_cell(map+y*width+x, y, x)) {
 				free(map);
 				return EXIT_FAILURE;
@@ -67,9 +67,9 @@ int main(void) {
 		free(map);
 		return EXIT_FAILURE;
 	}
-	peaks_n = 0;
+	peaks_n = 0UL;
 	map_min = map;
-	for (cell = map+1; cell < map+map_size; cell++) {
+	for (cell = map+1UL; cell < map+map_size; cell++) {
 		if (cell->elevation < map_min->elevation) {
 			map_min = cell;
 		}
@@ -126,9 +126,9 @@ void peak_prominence(cell_t *peak) {
 	unsigned long i;
 	do {
 		int mid = hi/2+lo/2+(hi%2+lo%2)/2;
-		queue_size = 0;
+		queue_size = 0UL;
 		queue_push(NULL, peak, mid);
-		for (i = 0; i < queue_size && queue[i].to->elevation <= peak->elevation; i++) {
+		for (i = 0UL; i < queue_size && queue[i].to->elevation <= peak->elevation; i++) {
 			queue_push_neighbours(queue+i, mid);
 		}
 		if (i < queue_size) {
@@ -155,9 +155,9 @@ void peak_prominence(cell_t *peak) {
 		}
 		else {
 			reset_queue();
-			queue_size = 0;
+			queue_size = 0UL;
 			queue_push(NULL, peak, key_col->elevation);
-			i = 0;
+			i = 0UL;
 		}
 		for (; i < queue_size; i++) {
 			queue_push_neighbours(queue+i, key_col->elevation);
@@ -170,16 +170,16 @@ void peak_prominence(cell_t *peak) {
 }
 
 void queue_push_neighbours(edge_t *edge, int elevation_low) {
-	if (edge->to->x > 0) {
-		queue_push(edge, edge->to-1, elevation_low);
+	if (edge->to->x > 0UL) {
+		queue_push(edge, edge->to-1UL, elevation_low);
 	}
-	if (edge->to->y > 0) {
+	if (edge->to->y > 0UL) {
 		queue_push(edge, edge->to-width, elevation_low);
 	}
-	if (edge->to->x < width-1) {
-		queue_push(edge, edge->to+1, elevation_low);
+	if (edge->to->x < width-1UL) {
+		queue_push(edge, edge->to+1UL, elevation_low);
 	}
-	if (edge->to->y < height-1) {
+	if (edge->to->y < height-1UL) {
 		queue_push(edge, edge->to+width, elevation_low);
 	}
 }
@@ -199,7 +199,7 @@ void set_edge(edge_t *edge, edge_t *from, cell_t *to) {
 
 void reset_queue(void) {
 	unsigned long i;
-	for (i = 0; i < queue_size; i++) {
+	for (i = 0UL; i < queue_size; i++) {
 		queue[i].to->visited = 0;
 	}
 }
